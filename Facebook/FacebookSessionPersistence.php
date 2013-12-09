@@ -2,6 +2,7 @@
 
 namespace FOS\FacebookBundle\Facebook;
 
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,12 +20,33 @@ class FacebookSessionPersistence extends \BaseFacebook
     protected static $kSupportedKeys = array('state', 'code', 'access_token', 'user_id');
 
     /**
+     * The Application ID.
+     *
+     * @var array
+     */
+    protected $appId;
+
+    /**
+     * The Application App Secret.
+     *
+     * @var array
+     */
+    protected $appSecret;
+
+    /**
+     * @var \Symfony\Component\DependencyInjection\Container
+     */
+    protected $container;
+
+    /**
      * @param array   $config
      * @param Session $session
+     * @param Container $container
      * @param string  $prefix
      */
-    public function __construct($config, Session $session, $prefix = self::PREFIX)
+    public function __construct($config, Session $session, $container, $prefix = self::PREFIX)
     {
+        $this->container = $container;
         $this->session = $session;
         $this->prefix  = $prefix;
 
@@ -35,6 +57,75 @@ class FacebookSessionPersistence extends \BaseFacebook
         }
         // Add trustProxy configuration
         $this->trustForwarded = isset($config['trustForwarded']) ? $config['trustForwarded'] : Request::getTrustedProxies();
+    }
+
+    /**
+     * @param array $appId
+     *
+     * @return $this|\BaseFacebook
+     */
+    public function setAppId($appId) {
+        $this->appId = $appId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppId() {
+        /** @var Request $request */
+        $request = $this->container->get('request');
+
+        if(isset($request)) {
+            $locale = $request->getLocale();
+            if(isset($this->appId[$locale])) {
+                return $this->appId[$locale];
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param array $appSecret
+     *
+     * @return $this|\BaseFacebook
+     */
+    public function setAppSecret($appSecret) {
+        $this->appSecret = $appSecret;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppSecret() {
+        /** @var Request $request */
+        $request = $this->container->get('request');
+
+        if(isset($request)) {
+            $locale = $request->getLocale();
+            if(isset($this->appSecret[$locale])) {
+                return $this->appSecret[$locale];
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Returns the access token that should be used for logged out
+     * users when no authorization code is available.
+     *
+     * @return string The application access token, useful for gathering
+     *                public information about users and applications.
+     */
+    public function getApplicationAccessToken() {
+        return $this->getAppId().'|'.$this->getAppSecret();
     }
 
     /**
