@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->fixXmlConfig('permission', 'permissions')
             ->children()
-                ->scalarNode('application_info')->defaultFalse()->end()
+                ->arrayNode('application_info')->defaultNull()->end()
                 ->scalarNode('cookie')->defaultFalse()->end()
                 ->scalarNode('domain')->defaultNull()->end()
                 ->scalarNode('alias')->defaultNull()->end()
