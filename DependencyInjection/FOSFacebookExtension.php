@@ -40,7 +40,26 @@ class FOSFacebookExtension extends Extension
             $container->setParameter('fos_facebook.'.$attribute.'.class', $config['class'][$attribute]);
         }
 
-        foreach (array('app_id', 'secret', 'cookie', 'domain', 'logging', 'culture', 'permissions') as $attribute) {
+        $applicationInfo = $config['application_info'];
+        if($applicationInfo) {
+
+            $secretValues = [];
+            $appIdValues = [];
+            foreach($applicationInfo as $locale => $localeValues) {
+                foreach($localeValues as $parameterName => $value) {
+
+                    if($parameterName === 'app_id') {
+                        $secretValues[$locale] = $value;
+                    } elseif($parameterName === 'secret') {
+                        $appIdValues[$locale] = $value;
+                    }
+                }
+            }
+            $container->setParameter('fos_facebook.app_id', $appIdValues);
+            $container->setParameter('fos_facebook.secret', $secretValues);
+        }
+
+        foreach (array('secret', 'cookie', 'domain', 'logging', 'culture', 'permissions') as $attribute) {
             $container->setParameter('fos_facebook.'.$attribute, $config[$attribute]);
         }
 
