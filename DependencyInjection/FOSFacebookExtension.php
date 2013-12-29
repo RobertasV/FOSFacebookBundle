@@ -59,7 +59,7 @@ class FOSFacebookExtension extends Extension
             $container->setParameter('fos_facebook.secret', $secretValues);
         }
 
-        foreach (array('secret', 'cookie', 'domain', 'logging', 'culture', 'permissions') as $attribute) {
+        foreach (array('cookie', 'domain', 'logging', 'culture', 'permissions') as $attribute) {
             $container->setParameter('fos_facebook.'.$attribute, $config[$attribute]);
         }
 
