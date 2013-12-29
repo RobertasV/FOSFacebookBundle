@@ -48,9 +48,9 @@ class FOSFacebookExtension extends Extension
             foreach($applicationInfo as $locale => $localeValues) {
                 foreach($localeValues as $parameterName => $value) {
 
-                    if($parameterName === 'app_id') {
+                    if($parameterName === 'secret') {
                         $secretValues[$locale] = $value;
-                    } elseif($parameterName === 'secret') {
+                    } elseif($parameterName === 'app_id') {
                         $appIdValues[$locale] = $value;
                     }
                 }
