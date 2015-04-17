@@ -1,6 +1,6 @@
 <div id="fb-root"></div>
 {% if not async %}
-<script type="text/javascript" src="http://connect.facebook.net/{{ culture }}/all.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/{{ culture }}/sdk.js"></script>
 {% endif %}
 <script type="text/javascript">
 {% autoescape false %}
@@ -14,7 +14,7 @@ window.fbAsyncInit = function() {
 
 (function() {
   var e = document.createElement('script');
-  e.src = document.location.protocol + {{ "//connect.facebook.net/%s/all.js"|format(culture)|json_encode }};
+  e.src = document.location.protocol + {{ "//connect.facebook.net/%s/sdk.js"|format(culture)|json_encode }};
   e.async = true;
   document.getElementById('fb-root').appendChild(e);
 }());

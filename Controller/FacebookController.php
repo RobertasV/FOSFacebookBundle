@@ -45,7 +45,7 @@ class FacebookController extends ContainerAware
         $response->headers->set("Pragma", "public");
         $response->setMaxAge($cacheExpire);
         $response->setExpires($date);
-        $response->setContent('<script src="//connect.facebook.net/'.$culture.'/all.js"></script>');
+        $response->setContent('<script src="//connect.facebook.net/'.$culture.'/sdk.js"></script>');
 
         return $response;
     }

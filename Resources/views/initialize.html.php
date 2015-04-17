@@ -1,6 +1,6 @@
 <div id="fb-root"></div>
 <?php if (empty($async)) { ?>
-<script type="text/javascript" src="http://connect.facebook.net/<?php echo $culture ?>/all.js"></script>
+<script type="text/javascript" src="http://connect.facebook.net/<?php echo $culture ?>/sdk.js"></script>
 <?php } ?>
 <script type="text/javascript">
 <?php if (!empty($async)) { ?>
@@ -20,7 +20,7 @@ window.fbAsyncInit = function() {
 
 (function() {
   var e = document.createElement('script');
-  e.src = document.location.protocol + <?php echo json_encode('//connect.facebook.net/'.$culture.'/all.js') ?>;
+  e.src = document.location.protocol + <?php echo json_encode('//connect.facebook.net/'.$culture.'/sdk.js') ?>;
   e.async = true;
   document.getElementById('fb-root').appendChild(e);
 })();
